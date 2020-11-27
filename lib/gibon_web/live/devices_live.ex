@@ -34,6 +34,11 @@ defmodule GibonWeb.DevicesLive do
   end
 
   def fetch(socket) do
-    assign(socket, circuits: Circuits.UART.enumerate(), devices: Gibon.Serial.list_devices, ports: GibonWeb.SerialHelper.get_ports(Gibon.Serial.list_devices))
+    assign(
+      socket,
+      circuits: Circuits.UART.enumerate(),
+      devices: Gibon.Serial.list_devices,
+      ports: GibonWeb.SerialHelper.get_ports(Gibon.Serial.list_devices)
+    )
   end
 end
