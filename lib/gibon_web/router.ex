@@ -19,7 +19,7 @@ defmodule GibonWeb.Router do
 
     live "/", PageLive, :index
     live "/devices", DevicesLive, :index
-    live "/conditions", ConditionLive, :index
+    live "/conditions/:port", ConditionLive, :index
     live "/settings", SettingsLive, :index
   end
 

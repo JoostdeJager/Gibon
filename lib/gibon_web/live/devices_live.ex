@@ -8,12 +8,6 @@ defmodule GibonWeb.DevicesLive do
   end
 
   @impl true
-  def handle_event("delete-device", %{"port" => port}, socket) do
-    Gibon.Repo.get_by(Gibon.Serial.Device, port: port) |> Gibon.Repo.delete()
-    {:noreply, fetch(socket)}
-  end
-
-  @impl true
   def handle_event("add-device", %{"port" => port}, socket) do
     case device = Circuits.UART.enumerate() |> Map.get(port) do
       %{} ->
@@ -21,6 +15,17 @@ defmodule GibonWeb.DevicesLive do
     end
 
     {:noreply, fetch(socket)}
+  end
+
+  @impl true
+  def handle_event("delete-device", %{"port" => port}, socket) do
+    Gibon.Repo.get_by(Gibon.Serial.Device, port: port) |> Gibon.Repo.delete()
+    {:noreply, fetch(socket)}
+  end
+
+  @impl true
+  def handle_event("edit-conditions", %{"port" => port}, socket) do
+    redirect socket, to: Routes.condition_path(socket, :index, port)
   end
 
   @impl true

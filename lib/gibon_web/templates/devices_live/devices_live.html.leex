@@ -2,13 +2,13 @@
 <ul>
     <%= for {port, info} <- @circuits do %>
         <%= case info do %>
-            <%= %{description: description, manufacturer: manufacturer, product_id: product_id} -> %>
+            <%= %{description: description, vendor_id: vendor_id, product_id: product_id} -> %>
                 <li class="collection-item">
                     <div class="card">
                         <div class="card-content">
                             <span class="card-title"><%= port %></span>
                             <h6>Description: <%= description %></h6>
-                            <h6>Manufacturer: <%= manufacturer %></h6>
+                            <h6>Vendor id: <%= vendor_id %></h6>
                             <h6>Product id: <%= product_id %></h6>
                             <%= if not Enum.member?(@ports, port) do %>
                                 <%= link to: "", "phx-click": "add-device", "phx-value-port": "#{port}", class: "waves-effect waves-light btn light-green" do %>
@@ -17,6 +17,9 @@
                             <% else %>
                                 <%= link to: "", "phx-click": "delete-device", "phx-value-port": "#{port}", class: "waves-effect waves-light btn light-green" do %>
                                     Delete device
+                                <% end %>
+                                <%= link to: Routes.condition_path(@socket, :index, port), class: "waves-effect waves-light btn light-green", style: "left: 1%;" do %>
+                                    Edit conditions
                                 <% end %>
                             <% end %>
                         </div>
