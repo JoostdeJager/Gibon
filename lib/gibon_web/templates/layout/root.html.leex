@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <%= csrf_meta_tag() %>
+    <%= live_title_tag assigns[:page_title] || "Gibon" %>
+    <link phx-track-static rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script defer phx-track-static type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
+  </head>
+  <body>
+    <nav class="light-green darken-2">
+      <div class="nav-wrapper">
+        <%= link to: Routes.page_path(@conn, :index), class: "brand-logo", style: "left: 2%;" do %>
+          Gibon
+        <% end %>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+          <li>
+            <%= link to: Routes.devices_path(@conn, :index) do %>
+              Devices
+            <% end %>
+          </li>
+          <li>
+            <%= link to: Routes.condition_path(@conn, :index) do %>
+              Conditions
+            <% end %>
+          </li>
+          <li>
+            <%= link to: Routes.settings_path(@conn, :index) do %>
+              Settings
+            <% end %>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <br>
+    <%= @inner_content %>
+  </body>
+</html>
