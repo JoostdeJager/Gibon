@@ -63,4 +63,65 @@ defmodule Gibon.SerialTest do
       assert %Ecto.Changeset{} = Serial.change_device(device)
     end
   end
+
+  describe "conditions" do
+    alias Gibon.Serial.Condition
+
+    @valid_attrs %{operator: "some operator", value: "some value"}
+    @update_attrs %{operator: "some updated operator", value: "some updated value"}
+    @invalid_attrs %{operator: nil, value: nil}
+
+    def condition_fixture(attrs \\ %{}) do
+      {:ok, condition} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Serial.create_condition()
+
+      condition
+    end
+
+    test "list_conditions/0 returns all conditions" do
+      condition = condition_fixture()
+      assert Serial.list_conditions() == [condition]
+    end
+
+    test "get_condition!/1 returns the condition with given id" do
+      condition = condition_fixture()
+      assert Serial.get_condition!(condition.id) == condition
+    end
+
+    test "create_condition/1 with valid data creates a condition" do
+      assert {:ok, %Condition{} = condition} = Serial.create_condition(@valid_attrs)
+      assert condition.operator == "some operator"
+      assert condition.value == "some value"
+    end
+
+    test "create_condition/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Serial.create_condition(@invalid_attrs)
+    end
+
+    test "update_condition/2 with valid data updates the condition" do
+      condition = condition_fixture()
+      assert {:ok, %Condition{} = condition} = Serial.update_condition(condition, @update_attrs)
+      assert condition.operator == "some updated operator"
+      assert condition.value == "some updated value"
+    end
+
+    test "update_condition/2 with invalid data returns error changeset" do
+      condition = condition_fixture()
+      assert {:error, %Ecto.Changeset{}} = Serial.update_condition(condition, @invalid_attrs)
+      assert condition == Serial.get_condition!(condition.id)
+    end
+
+    test "delete_condition/1 deletes the condition" do
+      condition = condition_fixture()
+      assert {:ok, %Condition{}} = Serial.delete_condition(condition)
+      assert_raise Ecto.NoResultsError, fn -> Serial.get_condition!(condition.id) end
+    end
+
+    test "change_condition/1 returns a condition changeset" do
+      condition = condition_fixture()
+      assert %Ecto.Changeset{} = Serial.change_condition(condition)
+    end
+  end
 end
