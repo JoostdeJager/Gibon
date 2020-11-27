@@ -3,15 +3,8 @@ defmodule GibonWeb.DevicesLive do
 
   @impl true
   def mount(_params, _session, socket) do
-    if connected?(socket) do
-      :timer.send_interval(1000, self(), :update)
-    end
+    if connected?(socket), do: :timer.send_interval(1000, self(), :update)
     {:ok, fetch(socket)}
-  end
-
-  @impl true
-  def handle_event("get-devices", _params, socket) do
-    {:noreply, fetch(socket)}
   end
 
   @impl true
