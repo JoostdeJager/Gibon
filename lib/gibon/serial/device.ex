@@ -5,6 +5,7 @@ defmodule Gibon.Serial.Device do
   schema "devices" do
     field :port, :string
     field :product_id, :integer
+    has_many :conditions, Gibon.Serial.Condition, on_delete: :delete_all
 
     timestamps()
   end

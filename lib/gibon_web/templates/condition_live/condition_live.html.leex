@@ -1,1 +1,51 @@
-<h1>In de conditions</h1>
+<h4>New condition</h4>
+<form phx-submit="new-condition" class="form-control" autocomplete="off">
+    <div class="row">
+        <div class="input-field col s12">
+            <input name="value" id="value" placeholder="Value" type="text" style="border-bottom: 1px solid #8bc34a;">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s6">
+            <label for="">Value type</label>
+            <select class="browser-default" name="type">
+                <option value="number">Number</option>
+                <option value="text">Text</option>
+            </select>
+        </div>
+        <div class="col s6">
+            <label for="">Operator</label>
+            <select class="browser-default" name="operator">
+                <option value="==">==</option>
+                <option value=">">></option>
+                <option value="<"><</option>
+                <option value=">=">>=</option>
+                <option value="<="><=</option>
+                <option value="!=">!=</option>
+            </select>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <button class="btn waves-effect waves-light light-green" type="submit" name="action" style="left: 0.7%;">Create new condition</button>
+    </div>
+</form>
+
+<hr>
+
+<h4>Existing conditions for <%= @device.port %></h4>
+<ul>
+    <%= for condition <- @device.conditions do %>
+        <li class="collection-item">
+            <div class="card">
+                <div class="card-content">
+                    <span class="card-title">value <%= condition.operator %> <%= condition.value %></span>
+                    <%= link to: "", "phx-click": "delete-condition", "phx-value-value": "#{condition.value}", class: "waves-effect waves-light btn light-green" do %>
+                        Delete condition
+                    <% end %>
+                </div>
+            </div>
+        </li>
+    <% end %>
+</ul>
