@@ -8,7 +8,9 @@ defmodule GibonWeb.ConditionLive do
   end
 
   @impl true
-  def handle_event("new-condition", %{"operator" => operator, "value" => raw_value, "type" => type}, socket) do
+  def handle_event("new-condition", %{"operator" => operator, "value" => raw_value, "type" => type, "url" => url} = params, socket) do
+    IO.inspect(params)
+
     value =
       case type do
         "number" ->
@@ -17,13 +19,16 @@ defmodule GibonWeb.ConditionLive do
           "\"#{raw_value}\""
       end
 
+    condition = %{operator: operator, value: value, url: url}
+    IO.inspect condition
+
     device = socket.assigns.device
     changeset =
       device
       |> Ecto.build_assoc(:conditions)
-      |> Gibon.Serial.Condition.changeset(%{"operator" => operator, "value" => value})
+      |> Gibon.Serial.Condition.changeset(condition)
 
-    Gibon.Repo.insert(changeset)
+    IO.inspect Gibon.Repo.insert(changeset)
 
     {:noreply, fetch(socket)}
   end

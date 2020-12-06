@@ -28,7 +28,11 @@
                 <option value="!=">!=</option>
             </select>
         </div>
-
+    </div>
+    <div class="row">
+        <div class="input-field col s12">
+            <input name="url" id="url" placeholder="Url" type="text" style="border-bottom: 1px solid #8bc34a;">
+        </div>
     </div>
 
     <div class="row">
@@ -44,7 +48,9 @@
         <li class="collection-item">
             <div class="card">
                 <div class="card-content">
-                    <span class="card-title">value <%= condition.operator %> <%= condition.value %></span>
+                    <span class="card-title">Id: <%= condition.id %></span>
+                    <h6>Check: value <%= condition.operator %> <%= condition.value %></h6>
+                    <h6>Request: POST <%= condition.url %><%= if String.ends_with?(condition.url, "/"), do: "", else: "/" %>value</h6>
                     <%= link to: "", "phx-click": "delete-condition", "phx-value-value": "#{condition.value}", class: "waves-effect waves-light btn light-green" do %>
                         Delete condition
                     <% end %>
