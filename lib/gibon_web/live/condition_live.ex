@@ -19,16 +19,13 @@ defmodule GibonWeb.ConditionLive do
           "\"#{raw_value}\""
       end
 
-    condition = %{operator: operator, value: value, url: url}
-    IO.inspect condition
-
     device = socket.assigns.device
     changeset =
       device
       |> Ecto.build_assoc(:conditions)
-      |> Gibon.Serial.Condition.changeset(condition)
+      |> Gibon.Serial.Condition.changeset(%{"operator" => operator, "value" => value, "url" => url})
 
-    IO.inspect Gibon.Repo.insert(changeset)
+    Gibon.Repo.insert(changeset)
 
     {:noreply, fetch(socket)}
   end
