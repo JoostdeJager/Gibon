@@ -11,7 +11,7 @@ defmodule GibonWeb.DevicesLive do
   def handle_event("add-device", %{"port" => port}, socket) do
     case device = Circuits.UART.enumerate() |> Map.get(port) do
       %{} ->
-        Gibon.Serial.create_device(%{"port" => port, "product_id" => device.product_id})
+        Gibon.Serial.create_device(%{"port" => port, "product_id" => device.product_id, "listening" => false})
     end
 
     {:noreply, fetch(:db, socket)}
@@ -24,8 +24,10 @@ defmodule GibonWeb.DevicesLive do
   end
 
   @impl true
-  def handle_event("edit-conditions", %{"port" => port}, socket) do
-    redirect socket, to: Routes.condition_path(socket, :index, port)
+  def handle_event("start-listening", %{"port" => port}, socket) do
+    device = Gibon.Repo.get_by(Gibon.Serial.Device, port: port) |> Gibon.Repo.preload(:conditions)
+    IO.inspect(device)
+    {:noreply, socket}
   end
 
   @impl true
