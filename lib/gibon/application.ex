@@ -6,7 +6,7 @@ defmodule Gibon.Application do
   use Application
 
   def start(_type, _args) do
-    Gibon.Repo.update_all(Gibon.Serial.Device, set: [listening: false])
+    # Gibon.Repo.update_all(Gibon.Serial.Device, set: [listening: false])
 
     children = [
       # Start the Ecto repository

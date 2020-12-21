@@ -4,4 +4,8 @@ defmodule GibonWeb.SerialHelper do
       device.port
     end
   end
+
+  def start_server(port) do
+    GibonWeb.SerialListener.start_link(port)
+  end
 end

@@ -2,6 +2,13 @@
     <i class="large material-icons">arrow_back</i>
 <% end %>
 
+<%= case @listening do %>
+    <% nil -> %>
+        <button phx-click="start-listening" class="waves-effect waves-light btn light-green">Start listening</button>
+    <% _ -> %>
+        <button phx-click="stop-listening" class="waves-effect waves-light btn light-green">Stop listening</button>
+<% end %>
+
 <h4>New condition</h4>
 <form phx-submit="new-condition" class="form-control" autocomplete="off">
     <div class="row">

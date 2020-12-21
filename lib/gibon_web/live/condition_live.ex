@@ -8,9 +8,7 @@ defmodule GibonWeb.ConditionLive do
   end
 
   @impl true
-  def handle_event("new-condition", %{"operator" => operator, "value" => raw_value, "type" => type, "url" => url} = params, socket) do
-    IO.inspect(params)
-
+  def handle_event("new-condition", %{"operator" => operator, "value" => raw_value, "type" => type, "url" => url}, socket) do
     value =
       case type do
         "number" ->
@@ -20,6 +18,7 @@ defmodule GibonWeb.ConditionLive do
       end
 
     device = socket.assigns.device
+
     changeset =
       device
       |> Ecto.build_assoc(:conditions)
@@ -27,26 +26,42 @@ defmodule GibonWeb.ConditionLive do
 
     Gibon.Repo.insert(changeset)
 
-    {:noreply, fetch(socket)}
+    {:noreply, fetch(socket, :db)}
   end
 
   @impl true
   def handle_event("delete-condition", %{"value" => value}, socket) do
     Gibon.Repo.get_by(Gibon.Serial.Condition, value: value) |> Gibon.Repo.delete()
+    {:noreply, fetch(socket, :db)}
+  end
+
+  @impl true
+  def handle_event("start-listening", _, socket) do
+    GibonWeb.SerialHelper.start_server(socket.assigns.device.port)
     {:noreply, fetch(socket)}
+  end
+
+  @impl true
+  def handle_event("stop-listening", _, socket) do
+    GibonWeb.SerialListener.stop(Process.whereis(:"#{socket.assigns.device.port}"))
+    {:noreply, fetch(socket)}
+  end
+
+  def fetch(socket, :db) do
+    socket
+    |> assign(device: Gibon.Repo.get_by(Gibon.Serial.Device, port: socket.assigns.device.port) |> Gibon.Repo.preload(:conditions))
+    |> fetch
   end
 
   def fetch(socket, device) do
     socket
     |> assign(device: device)
-    |> fetch
+    |> fetch(:db)
   end
 
   def fetch(socket) do
-    assign(
-      socket,
-      device: Gibon.Repo.get_by(Gibon.Serial.Device, port: socket.assigns.device.port) |> Gibon.Repo.preload(:conditions)
-    )
+    socket
+    |> assign(listening: Process.whereis(:"#{socket.assigns.device.port}"))
   end
 
   @impl true

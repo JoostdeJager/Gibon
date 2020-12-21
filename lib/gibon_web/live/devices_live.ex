@@ -24,13 +24,6 @@ defmodule GibonWeb.DevicesLive do
   end
 
   @impl true
-  def handle_event("start-listening", %{"port" => port}, socket) do
-    device = Gibon.Repo.get_by(Gibon.Serial.Device, port: port) |> Gibon.Repo.preload(:conditions)
-    IO.inspect(device)
-    {:noreply, socket}
-  end
-
-  @impl true
   def handle_info(:update, socket) do
     {:noreply, fetch(socket)}
   end
