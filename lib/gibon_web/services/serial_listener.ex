@@ -24,7 +24,6 @@ defmodule GibonWeb.SerialListener do
 
     # Get the device and the conditions from the database
     device = Gibon.Repo.get_by(Gibon.Serial.Device, port: port) |> Gibon.Repo.preload(:conditions)
-    Gibon.Serial.update_device(device, %{listening: true})
 
     # Return the initial state
     {:ok, %{"device" => device, "pid" => pid}}

@@ -11,7 +11,7 @@ defmodule GibonWeb.DevicesLive do
   def handle_event("add-device", %{"port" => port}, socket) do
     case device = Circuits.UART.enumerate() |> Map.get(port) do
       %{} ->
-        Gibon.Serial.create_device(%{"port" => port, "product_id" => device.product_id, "listening" => false})
+        Gibon.Serial.create_device(%{"port" => port, "product_id" => device.product_id})
     end
 
     {:noreply, fetch(:db, socket)}

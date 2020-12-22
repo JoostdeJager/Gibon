@@ -5,7 +5,6 @@ defmodule Gibon.Repo.Migrations.CreateDevices do
     create table(:devices) do
       add :port, :string
       add :product_id, :integer
-      add :listening, :boolean
 
       timestamps()
     end
