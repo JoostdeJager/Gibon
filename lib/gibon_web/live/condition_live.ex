@@ -24,8 +24,8 @@ defmodule GibonWeb.ConditionLive do
   end
 
   @impl true
-  def handle_event("delete-condition", %{"value" => value}, socket) do
-    Gibon.Repo.get_by(Gibon.Serial.Condition, value: value) |> Gibon.Repo.delete()
+  def handle_event("delete-condition", %{"id" => id}, socket) do
+    Gibon.Repo.get(Gibon.Serial.Condition, id) |> Gibon.Repo.delete()
 
     GibonWeb.SerialHelper.broadcast(:deleted)
 

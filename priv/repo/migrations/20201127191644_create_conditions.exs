@@ -11,7 +11,5 @@ defmodule Gibon.Repo.Migrations.CreateConditions do
 
       timestamps()
     end
-
-    create unique_index(:conditions, [:value])
   end
 end

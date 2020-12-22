@@ -17,6 +17,5 @@ defmodule Gibon.Serial.Condition do
     condition
     |> cast(attrs, [:operator, :value, :url, :type])
     |> validate_required([:operator, :value, :url, :type])
-    |> unique_constraint(:value)
   end
 end
