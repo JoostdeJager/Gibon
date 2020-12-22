@@ -2,6 +2,13 @@
     <i class="large material-icons">arrow_back</i>
 <% end %>
 
+<%= case @listening do %>
+    <% nil -> %>
+        <button phx-click="start-listening" class="waves-effect waves-light btn light-green">Start listening</button>
+    <% _ -> %>
+        <button phx-click="stop-listening" class="waves-effect waves-light btn light-green">Stop listening</button>
+<% end %>
+
 <h4>New condition</h4>
 <form phx-submit="new-condition" class="form-control" autocomplete="off">
     <div class="row">
@@ -28,7 +35,11 @@
                 <option value="!=">!=</option>
             </select>
         </div>
-
+    </div>
+    <div class="row">
+        <div class="input-field col s12">
+            <input name="url" id="url" placeholder="Url" type="text" style="border-bottom: 1px solid #8bc34a;">
+        </div>
     </div>
 
     <div class="row">
@@ -44,8 +55,10 @@
         <li class="collection-item">
             <div class="card">
                 <div class="card-content">
-                    <span class="card-title">value <%= condition.operator %> <%= condition.value %></span>
-                    <%= link to: "", "phx-click": "delete-condition", "phx-value-value": "#{condition.value}", class: "waves-effect waves-light btn light-green" do %>
+                    <span class="card-title">Id: <%= condition.id %></span>
+                    <h6>Check: value <%= condition.operator %> <%= condition.value %></h6>
+                    <h6>Request: <%= condition.url %><%= if String.ends_with?(condition.url, "/"), do: "", else: "/" %>value</h6>
+                    <%= link to: "", "phx-click": "delete-condition", "phx-value-id": "#{condition.id}", class: "waves-effect waves-light btn light-green" do %>
                         Delete condition
                     <% end %>
                 </div>

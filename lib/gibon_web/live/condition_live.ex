@@ -8,43 +8,57 @@ defmodule GibonWeb.ConditionLive do
   end
 
   @impl true
-  def handle_event("new-condition", %{"operator" => operator, "value" => raw_value, "type" => type}, socket) do
-    value =
-      case type do
-        "number" ->
-          raw_value
-        "text" ->
-          "\"#{raw_value}\""
-      end
-
+  def handle_event("new-condition", %{"operator" => operator, "value" => value, "type" => type, "url" => url}, socket) do
     device = socket.assigns.device
+
     changeset =
       device
       |> Ecto.build_assoc(:conditions)
-      |> Gibon.Serial.Condition.changeset(%{"operator" => operator, "value" => value})
+      |> Gibon.Serial.Condition.changeset(%{"operator" => operator, "value" => value, "url" => url, "type" => type})
 
     Gibon.Repo.insert(changeset)
 
+    GibonWeb.SerialHelper.broadcast(:added)
+
+    {:noreply, fetch(socket, :db)}
+  end
+
+  @impl true
+  def handle_event("delete-condition", %{"id" => id}, socket) do
+    Gibon.Repo.get(Gibon.Serial.Condition, id) |> Gibon.Repo.delete()
+
+    GibonWeb.SerialHelper.broadcast(:deleted)
+
+    {:noreply, fetch(socket, :db)}
+  end
+
+  @impl true
+  def handle_event("start-listening", _, socket) do
+    GibonWeb.SerialHelper.start_server(socket.assigns.device.port)
     {:noreply, fetch(socket)}
   end
 
   @impl true
-  def handle_event("delete-condition", %{"value" => value}, socket) do
-    Gibon.Repo.get_by(Gibon.Serial.Condition, value: value) |> Gibon.Repo.delete()
+  def handle_event("stop-listening", _, socket) do
+    GibonWeb.SerialListener.stop(Process.whereis(:"#{socket.assigns.device.port}"))
     {:noreply, fetch(socket)}
+  end
+
+  def fetch(socket, :db) do
+    socket
+    |> assign(device: Gibon.Repo.get_by(Gibon.Serial.Device, port: socket.assigns.device.port) |> Gibon.Repo.preload(:conditions))
+    |> fetch
   end
 
   def fetch(socket, device) do
     socket
     |> assign(device: device)
-    |> fetch
+    |> fetch(:db)
   end
 
   def fetch(socket) do
-    assign(
-      socket,
-      device: Gibon.Repo.get_by(Gibon.Serial.Device, port: socket.assigns.device.port) |> Gibon.Repo.preload(:conditions)
-    )
+    socket
+    |> assign(listening: Process.whereis(:"#{socket.assigns.device.port}"))
   end
 
   @impl true

@@ -5,11 +5,11 @@ defmodule Gibon.Repo.Migrations.CreateConditions do
     create table(:conditions) do
       add :operator, :string
       add :value, :string
+      add :url, :string
+      add :type, :string
       add :device_id, references(:devices)
 
       timestamps()
     end
-
-    create unique_index(:conditions, [:value])
   end
 end
