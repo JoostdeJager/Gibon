@@ -42,8 +42,20 @@ defmodule GibonWeb.SerialListener do
           _ ->
             "\"#{message}\" #{condition.operator} \"#{condition.value}\""
         end
-      {output, _} = Code.eval_string(condition_string)
-      IO.inspect("#{condition_string} => #{output}")
+
+      case Code.eval_string(condition_string) do
+        {true, _} ->
+          url =
+            case String.ends_with?(condition.url, "/") do
+              true ->
+                "#{condition.url}#{message}"
+              false ->
+                "#{condition.url}/#{message}"
+            end
+          GibonWeb.RequestHelper.send_request(url)
+        _ ->
+          :false
+      end
     end
     {:noreply, state}
   end
