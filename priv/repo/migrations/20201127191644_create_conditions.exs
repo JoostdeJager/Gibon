@@ -6,6 +6,7 @@ defmodule Gibon.Repo.Migrations.CreateConditions do
       add :operator, :string
       add :value, :string
       add :url, :string
+      add :type, :string
       add :device_id, references(:devices)
 
       timestamps()

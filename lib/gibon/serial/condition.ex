@@ -6,6 +6,7 @@ defmodule Gibon.Serial.Condition do
     field :operator, :string
     field :value, :string
     field :url, :string
+    field :type, :string
     belongs_to :device, Gibon.Serial.Device
 
     timestamps()
@@ -14,8 +15,8 @@ defmodule Gibon.Serial.Condition do
   @doc false
   def changeset(condition, attrs) do
     condition
-    |> cast(attrs, [:operator, :value, :url])
-    |> validate_required([:operator, :value, :url])
+    |> cast(attrs, [:operator, :value, :url, :type])
+    |> validate_required([:operator, :value, :url, :type])
     |> unique_constraint(:value)
   end
 end

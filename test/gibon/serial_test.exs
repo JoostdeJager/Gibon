@@ -124,4 +124,65 @@ defmodule Gibon.SerialTest do
       assert %Ecto.Changeset{} = Serial.change_condition(condition)
     end
   end
+
+  describe "configs" do
+    alias Gibon.Serial.Config
+
+    @valid_attrs %{request_port: "some request_port", request_url: "some request_url"}
+    @update_attrs %{request_port: "some updated request_port", request_url: "some updated request_url"}
+    @invalid_attrs %{request_port: nil, request_url: nil}
+
+    def config_fixture(attrs \\ %{}) do
+      {:ok, config} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Serial.create_config()
+
+      config
+    end
+
+    test "list_configs/0 returns all configs" do
+      config = config_fixture()
+      assert Serial.list_configs() == [config]
+    end
+
+    test "get_config!/1 returns the config with given id" do
+      config = config_fixture()
+      assert Serial.get_config!(config.id) == config
+    end
+
+    test "create_config/1 with valid data creates a config" do
+      assert {:ok, %Config{} = config} = Serial.create_config(@valid_attrs)
+      assert config.request_port == "some request_port"
+      assert config.request_url == "some request_url"
+    end
+
+    test "create_config/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Serial.create_config(@invalid_attrs)
+    end
+
+    test "update_config/2 with valid data updates the config" do
+      config = config_fixture()
+      assert {:ok, %Config{} = config} = Serial.update_config(config, @update_attrs)
+      assert config.request_port == "some updated request_port"
+      assert config.request_url == "some updated request_url"
+    end
+
+    test "update_config/2 with invalid data returns error changeset" do
+      config = config_fixture()
+      assert {:error, %Ecto.Changeset{}} = Serial.update_config(config, @invalid_attrs)
+      assert config == Serial.get_config!(config.id)
+    end
+
+    test "delete_config/1 deletes the config" do
+      config = config_fixture()
+      assert {:ok, %Config{}} = Serial.delete_config(config)
+      assert_raise Ecto.NoResultsError, fn -> Serial.get_config!(config.id) end
+    end
+
+    test "change_config/1 returns a config changeset" do
+      config = config_fixture()
+      assert %Ecto.Changeset{} = Serial.change_config(config)
+    end
+  end
 end

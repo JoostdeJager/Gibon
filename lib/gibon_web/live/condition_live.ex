@@ -8,23 +8,17 @@ defmodule GibonWeb.ConditionLive do
   end
 
   @impl true
-  def handle_event("new-condition", %{"operator" => operator, "value" => raw_value, "type" => type, "url" => url}, socket) do
-    value =
-      case type do
-        "number" ->
-          raw_value
-        "text" ->
-          "\"#{raw_value}\""
-      end
-
+  def handle_event("new-condition", %{"operator" => operator, "value" => value, "type" => type, "url" => url}, socket) do
     device = socket.assigns.device
 
     changeset =
       device
       |> Ecto.build_assoc(:conditions)
-      |> Gibon.Serial.Condition.changeset(%{"operator" => operator, "value" => value, "url" => url})
+      |> Gibon.Serial.Condition.changeset(%{"operator" => operator, "value" => value, "url" => url, "type" => type})
 
     Gibon.Repo.insert(changeset)
+
+    GibonWeb.SerialHelper.broadcast(:added)
 
     {:noreply, fetch(socket, :db)}
   end
@@ -32,6 +26,9 @@ defmodule GibonWeb.ConditionLive do
   @impl true
   def handle_event("delete-condition", %{"value" => value}, socket) do
     Gibon.Repo.get_by(Gibon.Serial.Condition, value: value) |> Gibon.Repo.delete()
+
+    GibonWeb.SerialHelper.broadcast(:deleted)
+
     {:noreply, fetch(socket, :db)}
   end
 
