@@ -16,6 +16,7 @@ defmodule GibonWeb.SerialListener do
   def init(port) do
     # Open the Serial port
     {:ok, pid} = Circuits.UART.start_link
+
     Circuits.UART.configure(pid, framing: {Circuits.UART.Framing.Line, separator: "\r\n"})
     Circuits.UART.open(pid, port)
 
@@ -36,9 +37,13 @@ defmodule GibonWeb.SerialListener do
       condition_string =
         case condition.type do
           "number" ->
-            {parsed_message, _} = Integer.parse(message)
-            {value, _} = Integer.parse(condition.value)
-            "#{parsed_message} #{condition.operator} #{value}"
+            case Integer.parse(message) do
+              {parsed_message, _} ->
+                {value, _} = Integer.parse(condition.value)
+                "#{parsed_message} #{condition.operator} #{value}"
+                _ ->
+                  ""
+            end
           _ ->
             "\"#{message}\" #{condition.operator} \"#{condition.value}\""
         end
@@ -49,7 +54,7 @@ defmodule GibonWeb.SerialListener do
             case String.ends_with?(condition.url, "/") do
               true ->
                 "#{condition.url}#{message}"
-              false ->
+              _ ->
                 "#{condition.url}/#{message}"
             end
           GibonWeb.RequestHelper.send_request(url)
