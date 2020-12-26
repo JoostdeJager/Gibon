@@ -37,9 +37,9 @@ defmodule GibonWeb.SerialListener do
       condition_string =
         case condition.type do
           "number" ->
-            case Integer.parse(message) do
+            case Float.parse(message) do
               {parsed_message, _} ->
-                {value, _} = Integer.parse(condition.value)
+                {value, _} = Float.parse(condition.value)
                 "#{parsed_message} #{condition.operator} #{value}"
                 _ ->
                   ""
