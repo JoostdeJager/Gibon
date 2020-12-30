@@ -1,91 +1,122 @@
-/* This file is for your main application css. */
-@import "./phoenix.css";
-@import "../node_modules/nprogress/nprogress.css";
+@import '~bootstrap/scss/bootstrap.scss';
 
-/* LiveView specific classes for your customizations */
-.phx-no-feedback.invalid-feedback,
-.phx-no-feedback .invalid-feedback {
-  display: none;
+// Variables
+
+$base-color: #cad2ad;
+$darker-base: #8a8c43;
+$darker-base-accent: #acaf7a;
+
+
+// global
+
+body {
+  position: relative;
+  min-height: 100%;
 }
 
-.phx-click-loading {
-  opacity: 0.5;
-  transition: opacity 1s ease-out;
-}
-
-.phx-disconnected{
-  cursor: wait;
-}
-.phx-disconnected *{
-  pointer-events: none;
-}
-
-.phx-modal {
-  opacity: 1!important;
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
+html {
   height: 100%;
-  overflow: auto;
-  background-color: rgb(0,0,0);
-  background-color: rgba(0,0,0,0.4);
+  box-sizing: border-box;
 }
 
-.phx-modal-content {
-  background-color: #fefefe;
-  margin: 15% auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%;
+// Helpers
+
+.top {
+  margin-top: 1%;
 }
 
-.phx-modal-close {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
+.bottom {
+  height: 80px;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.bottom-right {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+// Header and footer
+
+.navbar {
+  background-color: $base-color;
+}
+
+.footer {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: $base-color;
+  text-align: center;
+}
+
+// Jumbotron
+
+.jumbo-background {
+  background-image: url("/images/background.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+// Buttons
+
+.btn-light {
+  border: none;
+  background-color: $darker-base;
+}
+
+.btn-light:hover {
+  border: none;
+  background-color: $darker-base-accent;
+}
+
+.btn-light:focus {
+  border: none;
+  background-color: $darker-base;
+}
+
+// Device
+
+.devicebox {
+  padding:10px;
+  margin-bottom:10px;
+  background-color: $base-color;
+  border-radius: 10px;
+}
+
+.deviceinfo {
+  font-weight: bold;
+  padding: 5px 0 0 0;
+}
+
+.devicetitle {
+  font-weight: bold;
+  font-size: 1.4em;
+}
+
+// Condition
+
+.conditionbox {
+  padding:10px;
+  margin-bottom:10px;
+  background-color: $base-color;
+  border-radius: 10px
+}
+
+.conditioninfo {
   font-weight: bold;
 }
 
-.phx-modal-close:hover,
-.phx-modal-close:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
+.conditiontitle {
+  font-weight: bold;
+  font-size: 1.4em;
 }
 
+// Forms
 
-/* Alerts and form errors */
-.alert {
-  padding: 15px;
-  margin-bottom: 20px;
-  border: 1px solid transparent;
-  border-radius: 4px;
-}
-.alert-info {
-  color: #31708f;
-  background-color: #d9edf7;
-  border-color: #bce8f1;
-}
-.alert-warning {
-  color: #8a6d3b;
-  background-color: #fcf8e3;
-  border-color: #faebcc;
-}
-.alert-danger {
-  color: #a94442;
-  background-color: #f2dede;
-  border-color: #ebccd1;
-}
-.alert p {
-  margin-bottom: 0;
-}
-.alert:empty {
-  display: none;
-}
-.invalid-feedback {
-  color: #a94442;
-  display: block;
-  margin: -1rem 0 2rem;
-}
+.form-control:focus{border-color: $darker-base-accent;  box-shadow: none; -webkit-box-shadow: none;} 

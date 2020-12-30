@@ -15,6 +15,15 @@ defmodule GibonWeb.SerialHelper do
     end
   end
 
+  def filter_devices(devices) do
+    [return | _] = for {key, value} <- devices do
+      if value == %{} do
+        Map.delete(devices, key)
+      end
+    end
+    return
+  end
+
   def start_server(port) do
     GibonWeb.SerialListener.start_link(port)
   end

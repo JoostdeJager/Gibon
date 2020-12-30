@@ -41,7 +41,15 @@ module.exports = (env, options) => {
             'css-loader',
             'sass-loader',
           ],
-        }
+        },
+        {
+          test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?(\?.*$|$)/,
+          use: 'url-loader?&limit=10000&name=/fonts/[name].[ext]',
+        },
+        {
+          test: /\.(eot|ttf|otf)?(\?.*$|$)/,
+          loader: 'file-loader?&limit=10000&name=/fonts/[name].[ext]',
+        },
       ]
     },
     plugins: [

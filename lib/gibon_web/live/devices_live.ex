@@ -35,7 +35,7 @@ defmodule GibonWeb.DevicesLive do
 
   def fetch(socket) do
     socket
-    |> assign(circuits: Circuits.UART.enumerate())
+    |> assign(circuits: GibonWeb.SerialHelper.filter_devices(Circuits.UART.enumerate()))
   end
 
   def fetch(:db, socket) do
