@@ -34,7 +34,7 @@ defmodule GibonWeb.ConditionLive do
 
   @impl true
   def handle_event("start-listening", _, socket) do
-    GibonWeb.SerialHelper.start_server(socket.assigns.device.port)
+    GibonWeb.SerialListener.start_link(socket.assigns.device.port)
     {:noreply, fetch(socket)}
   end
 

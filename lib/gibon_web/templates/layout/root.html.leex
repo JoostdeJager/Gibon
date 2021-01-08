@@ -13,12 +13,12 @@
   </head>
   <body>
     <nav class="navbar navbar-light">
-      <%= link to: Routes.page_path(@conn, :index), class: "navbar-brand", style: "left: 2%;" do %>
+      <%= live_redirect to: Routes.page_path(@conn, :index), class: "navbar-brand", style: "left: 2%;" do %>
         Gibon
       <% end %>
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-          <%= link to: Routes.devices_path(@conn, :index), class: "nav-link" do %>
+          <%= live_redirect to: Routes.devices_path(@conn, :index), class: "nav-link" do %>
             Devices
           <% end %>  
         </li>

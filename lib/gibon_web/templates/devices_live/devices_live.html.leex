@@ -28,7 +28,7 @@
                                         <button class="btn btn-light" phx-click="delete-device" phx-value-port="<%= port %>">
                                             Verwijderen
                                         </button>
-                                        <%= link to: Routes.condition_path(@socket, :index, port), class: "btn btn-light" do %>
+                                        <%= live_redirect to: Routes.condition_path(@socket, :index, port), class: "btn btn-light" do %>
                                             Instellingen
                                         <% end %>
                                     <% end %>   

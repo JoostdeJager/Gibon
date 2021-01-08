@@ -24,6 +24,21 @@ defmodule GibonWeb.SerialHelper do
     return
   end
 
+  def get_code_string(condition, message) do
+    case condition.type do
+      "number" ->
+        case Float.parse(message) do
+          {parsed_message, _} ->
+            {value, _} = Float.parse(condition.value)
+            "#{parsed_message} #{condition.operator} #{value}"
+            _ ->
+              ""
+        end
+      _ ->
+        "\"#{message}\" #{condition.operator} \"#{condition.value}\""
+    end
+  end
+
   def start_server(port) do
     GibonWeb.SerialListener.start_link(port)
   end

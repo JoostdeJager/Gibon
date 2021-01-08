@@ -34,20 +34,7 @@ defmodule GibonWeb.SerialListener do
   def handle_info({:circuits_uart, _pid, message}, state) do
     conditions = state["device"].conditions
     for condition <- conditions do
-      condition_string =
-        case condition.type do
-          "number" ->
-            case Float.parse(message) do
-              {parsed_message, _} ->
-                {value, _} = Float.parse(condition.value)
-                "#{parsed_message} #{condition.operator} #{value}"
-                _ ->
-                  ""
-            end
-          _ ->
-            "\"#{message}\" #{condition.operator} \"#{condition.value}\""
-        end
-
+      condition_string = GibonWeb.SerialHelper.get_code_string(condition, message)
       case Code.eval_string(condition_string) do
         {true, _} ->
           url =
