@@ -16,11 +16,13 @@ defmodule GibonWeb.SerialHelper do
   end
 
   def filter_devices(devices) do
-    [return | _] = for {key, value} <- devices do
-      if value == %{} do
-        Map.delete(devices, key)
+    [return | _] =
+      for {key, value} <- devices do
+        if Map.get(value, :product_id) == nil do
+          Map.delete(devices, key)
+        end
       end
-    end
+
     return
   end
 

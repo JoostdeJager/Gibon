@@ -15,7 +15,7 @@ defmodule GibonWeb.SerialListener do
 
   def init(port) do
     # Open the Serial port
-    {:ok, pid} = Circuits.UART.start_link
+    {:ok, pid} = Circuits.UART.start_link()
 
     Circuits.UART.configure(pid, framing: {Circuits.UART.Framing.Line, separator: "\r\n"})
     Circuits.UART.open(pid, port)
@@ -32,7 +32,9 @@ defmodule GibonWeb.SerialListener do
 
   # Receive the data
   def handle_info({:circuits_uart, _pid, message}, state) do
+    IO.inspect(message)
     conditions = state["device"].conditions
+
     for condition <- conditions do
       condition_string =
         case condition.type do
@@ -41,9 +43,11 @@ defmodule GibonWeb.SerialListener do
               {parsed_message, _} ->
                 {value, _} = Float.parse(condition.value)
                 "#{parsed_message} #{condition.operator} #{value}"
-                _ ->
-                  ""
+
+              _ ->
+                ""
             end
+
           _ ->
             "\"#{message}\" #{condition.operator} \"#{condition.value}\""
         end
@@ -54,20 +58,31 @@ defmodule GibonWeb.SerialListener do
             case String.ends_with?(condition.url, "/") do
               true ->
                 "#{condition.url}#{message}"
+
               _ ->
                 "#{condition.url}/#{message}"
             end
+
           GibonWeb.RequestHelper.send_request(url)
+
         _ ->
-          :false
+          false
       end
     end
+
     {:noreply, state}
   end
 
   # React to a broadcast
   def handle_info(_, state) do
-    new_state = Map.put(state, "device", Gibon.Repo.get_by(Gibon.Serial.Device, port: state["device"].port) |> Gibon.Repo.preload(:conditions))
+    new_state =
+      Map.put(
+        state,
+        "device",
+        Gibon.Repo.get_by(Gibon.Serial.Device, port: state["device"].port)
+        |> Gibon.Repo.preload(:conditions)
+      )
+
     {:noreply, new_state}
   end
 

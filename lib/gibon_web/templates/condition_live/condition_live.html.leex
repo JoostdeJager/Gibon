@@ -4,7 +4,7 @@
     </div>
 </div>
 <div class="container">
-    <%= link to: Routes.devices_path(@socket, :index), class: "btn btn-light" do %>
+    <%= live_redirect to: Routes.devices_path(@socket, :index), class: "btn btn-light" do %>
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
             <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
         </svg>
@@ -14,6 +14,9 @@
             <button phx-click="start-listening" class="btn btn-light">Start connectie</button>
         <% _ -> %>
             <button phx-click="stop-listening" class="btn btn-light">Stop connectie</button>
+        <%= live_redirect to: Routes.console_path(@socket, :index, @device.port), class: "btn btn-light" do %>
+            Console
+        <% end %>
     <% end %>
     <form phx-submit="new-condition" class="form-group top">
         <h2 class="text-center">Nieuwe conditie</h2>
@@ -48,7 +51,7 @@
                 <input type="text" class="form-control" name="url" id="url" placeholder="Url" autocomplete="off">
             </div>
         </div>
-        <div class="row top">
+        <div class="row mt-4">
             <div class="col">
                 <button class="btn btn-light">Maak conditie</button>
             </div>

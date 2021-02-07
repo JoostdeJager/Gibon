@@ -129,7 +129,10 @@ defmodule Gibon.SerialTest do
     alias Gibon.Serial.Config
 
     @valid_attrs %{request_port: "some request_port", request_url: "some request_url"}
-    @update_attrs %{request_port: "some updated request_port", request_url: "some updated request_url"}
+    @update_attrs %{
+      request_port: "some updated request_port",
+      request_url: "some updated request_url"
+    }
     @invalid_attrs %{request_port: nil, request_url: nil}
 
     def config_fixture(attrs \\ %{}) do

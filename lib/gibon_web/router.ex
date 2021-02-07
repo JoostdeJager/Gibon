@@ -21,6 +21,7 @@ defmodule GibonWeb.Router do
     live "/devices", DevicesLive, :index
     live "/conditions/:port", ConditionLive, :index
     live "/settings", SettingsLive, :index
+    live "/console/:port", ConsoleLive, :index
   end
 
   # Other scopes may use custom stacks.

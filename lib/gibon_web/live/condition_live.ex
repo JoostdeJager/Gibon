@@ -8,13 +8,22 @@ defmodule GibonWeb.ConditionLive do
   end
 
   @impl true
-  def handle_event("new-condition", %{"operator" => operator, "value" => value, "type" => type, "url" => url}, socket) do
+  def handle_event(
+        "new-condition",
+        %{"operator" => operator, "value" => value, "type" => type, "url" => url},
+        socket
+      ) do
     device = socket.assigns.device
 
     changeset =
       device
       |> Ecto.build_assoc(:conditions)
-      |> Gibon.Serial.Condition.changeset(%{"operator" => operator, "value" => value, "url" => url, "type" => type})
+      |> Gibon.Serial.Condition.changeset(%{
+        "operator" => operator,
+        "value" => value,
+        "url" => url,
+        "type" => type
+      })
 
     Gibon.Repo.insert(changeset)
 
@@ -46,7 +55,11 @@ defmodule GibonWeb.ConditionLive do
 
   def fetch(socket, :db) do
     socket
-    |> assign(device: Gibon.Repo.get_by(Gibon.Serial.Device, port: socket.assigns.device.port) |> Gibon.Repo.preload(:conditions))
+    |> assign(
+      device:
+        Gibon.Repo.get_by(Gibon.Serial.Device, port: socket.assigns.device.port)
+        |> Gibon.Repo.preload(:conditions)
+    )
     |> fetch
   end
 

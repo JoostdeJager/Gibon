@@ -40,7 +40,7 @@ defmodule GibonWeb.DevicesLive do
 
   def fetch(:db, socket) do
     fetch(socket)
-    |> assign(devices: Gibon.Serial.list_devices)
-    |> assign(ports: GibonWeb.SerialHelper.get_ports(Gibon.Serial.list_devices))
+    |> assign(devices: Gibon.Serial.list_devices())
+    |> assign(ports: GibonWeb.SerialHelper.get_ports(Gibon.Serial.list_devices()))
   end
 end

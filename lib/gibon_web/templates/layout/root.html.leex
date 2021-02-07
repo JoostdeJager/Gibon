@@ -6,19 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <%= csrf_meta_tag() %>
     <%= live_title_tag assigns[:page_title] || "Gibon" %>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://assets.clubcollect.com/hitman/1.0.6/hitman.core.min.css"/>
+    <script src="https://assets.clubcollect.com/hitman/1.0.6/hitman.core.min.js"></script>
     <link phx-track-static rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>
     <script defer phx-track-static type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
   </head>
   <body>
     <nav class="navbar navbar-light">
-      <%= link to: Routes.page_path(@conn, :index), class: "navbar-brand", style: "left: 2%;" do %>
+      <%= live_redirect to: Routes.page_path(@conn, :index), class: "navbar-brand", style: "left: 2%;" do %>
         Gibon
       <% end %>
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-          <%= link to: Routes.devices_path(@conn, :index), class: "nav-link" do %>
+          <%= live_redirect to: Routes.devices_path(@conn, :index), class: "nav-link" do %>
             Devices
           <% end %>  
         </li>
