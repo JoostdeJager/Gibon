@@ -1,3 +1,34 @@
+<div class="col">
+    <div class="jumbotron jumbo-background text-center">
+        <h1>Instellingen <b>voor</b> device <b><%= @device.port %></b></h1>
+    </div>
+</div>
 <div class="container">
-	<h1><%= @device.port %></h1>
+	<h2 class="text-center"><%= @device.port %></h2>
+	<hr>
+    	<form phx-submit="send-message">
+    		<div class="row">
+	    		<div class="col-10">
+	    			<input type="text" placeholder="Message" name="message" class="form-control" autocomplete="off">
+	    		</div>
+	    		<div class="col-2">
+	    			<button class="btn btn-light w-100">Send</button>
+	    		</div>
+    		</div>
+    	</form>
+    <%= case length(@lines) do %>
+    <% 0 -> %>
+    <% _ -> %>
+        <ul class="list-unstyled console mt-3">
+            <%= for line <- @lines do %>
+                <li class="ml-2 mr-2">
+                	<%= if line["sender"] == "serial" do %>
+	                    <h4><%= line["message"] %></h4>
+	                <% else %>
+	                	<h4 class="text-right"><%= line["message"] %></h4>
+                    <% end %>
+                </li>
+            <% end %>
+        </ul>
+    <% end %>
 </div>

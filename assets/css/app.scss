@@ -120,3 +120,11 @@ html {
 // Forms
 
 .form-control:focus{border-color: $darker-base-accent;  box-shadow: none; -webkit-box-shadow: none;} 
+
+// Console
+
+.console {
+  height: 600px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}

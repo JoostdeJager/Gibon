@@ -1,4 +1,7 @@
 defmodule GibonWeb.SerialHelper do
+
+  # Pubsub
+
   @topic inspect(__MODULE__)
 
   def subscribe do
@@ -8,6 +11,8 @@ defmodule GibonWeb.SerialHelper do
   def broadcast(message) do
     Phoenix.PubSub.broadcast(Gibon.PubSub, @topic, message)
   end
+
+  # Helper functions
 
   def get_ports(devices) do
     for device <- devices do
@@ -26,9 +31,59 @@ defmodule GibonWeb.SerialHelper do
     return
   end
 
+  def get_condition_string(condition, message) do
+    case condition.type do
+      "number" ->
+        case Float.parse(message) do
+          {parsed_message, _} ->
+            {value, _} = Float.parse(condition.value)
+            "#{parsed_message} #{condition.operator} #{value}"
+          _ ->
+            ""
+        end
+      _ ->
+        "\"#{message}\" #{condition.operator} \"#{condition.value}\""
+    end
+  end
+
+  def get_condition_url(condition, message) do
+    case String.ends_with?(condition.url, "/") do
+      true ->
+        "#{condition.url}#{message}"
+      _ ->
+        "#{condition.url}/#{message}"
+    end
+  end
+
+  def perform_condition(condition, condition_string, message) do
+    case Code.eval_string(condition_string) do
+      {true, _} ->
+        url = get_condition_url(condition, message)
+        GibonWeb.RequestHelper.send_request(url)
+      _ ->
+        false
+    end
+  end
+
+  def check_conditions(state, message) do
+    conditions = state["device"].conditions
+
+    for condition <- conditions do
+      condition_string = get_condition_string(condition, message)
+      perform_condition(condition, condition_string, message)
+    end
+  end
+
+  # Genserver manager
+
   def start_server(port) do
     pid = Process.whereis(GibonWeb.SerialManager)
-    GenServer.cast(pid, {:new, port})
+    GenServer.cast(pid, {:new, {port, true}})
+  end
+
+  def start_console(port) do
+    pid = Process.whereis(GibonWeb.SerialManager)
+    GenServer.cast(pid, {:new, {port, false}})
   end
 
   def stop_server(port) do

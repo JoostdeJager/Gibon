@@ -30,20 +30,24 @@ defmodule GibonWeb.SerialManager do
     {:ok, servers}
   end
 
-  def handle_cast({:new, port}, servers) do
-    new_servers =
-      case GibonWeb.SerialListener.start_link(port) do
-        {:ok, pid} ->
-          Map.put(servers, port, pid)
-      end
+  def handle_cast({:new, {port, _} = state}, servers) do
+    if not Map.has_key?(servers, port) do
+      new_servers =
+        case GibonWeb.SerialListener.start_link(state) do
+          {:ok, pid} ->
+            Map.put(servers, port, pid)
+        end
 
-    IO.puts("+++++++++++++++++++++++++++++++++++")
-    IO.puts("+ SerialListener has been started +")
-    IO.puts("+++++++++++++++++++++++++++++++++++")
+      IO.puts("+++++++++++++++++++++++++++++++++++")
+      IO.puts("+ SerialListener has been started +")
+      IO.puts("+++++++++++++++++++++++++++++++++++")
 
-    broadcast("SerialListener started")
+      broadcast("started")
 
-    {:noreply, new_servers}
+      {:noreply, new_servers}
+    else 
+      {:noreply, servers}
+    end
   end
 
   def handle_cast({:close, port}, servers) do
@@ -57,7 +61,7 @@ defmodule GibonWeb.SerialManager do
     IO.puts("+ SerialListener has been stopped +")
     IO.puts("+++++++++++++++++++++++++++++++++++")
 
-    broadcast("SerialListener stopped")
+    broadcast("stopped")
 
     {:noreply, new_servers}
   end

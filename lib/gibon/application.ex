@@ -17,7 +17,8 @@ defmodule Gibon.Application do
       GibonWeb.Endpoint,
       # Start a worker by calling: Gibon.Worker.start_link(arg)
       # {Gibon.Worker, arg}
-      GibonWeb.SerialManager
+      GibonWeb.SerialManager,
+      GibonWeb.Terminal
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
