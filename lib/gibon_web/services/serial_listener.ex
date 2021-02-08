@@ -33,42 +33,42 @@ defmodule GibonWeb.SerialListener do
   # Receive the data
   def handle_info({:circuits_uart, _pid, message}, state) do
     IO.inspect(message)
-    conditions = state["device"].conditions
+    # conditions = state["device"].conditions
 
-    for condition <- conditions do
-      condition_string =
-        case condition.type do
-          "number" ->
-            case Float.parse(message) do
-              {parsed_message, _} ->
-                {value, _} = Float.parse(condition.value)
-                "#{parsed_message} #{condition.operator} #{value}"
+    # for condition <- conditions do
+    #   condition_string =
+    #     case condition.type do
+    #       "number" ->
+    #         case Float.parse(message) do
+    #           {parsed_message, _} ->
+    #             {value, _} = Float.parse(condition.value)
+    #             "#{parsed_message} #{condition.operator} #{value}"
 
-              _ ->
-                ""
-            end
+    #           _ ->
+    #             ""
+    #         end
 
-          _ ->
-            "\"#{message}\" #{condition.operator} \"#{condition.value}\""
-        end
+    #       _ ->
+    #         "\"#{message}\" #{condition.operator} \"#{condition.value}\""
+    #     end
 
-      case Code.eval_string(condition_string) do
-        {true, _} ->
-          url =
-            case String.ends_with?(condition.url, "/") do
-              true ->
-                "#{condition.url}#{message}"
+    #   case Code.eval_string(condition_string) do
+    #     {true, _} ->
+    #       url =
+    #         case String.ends_with?(condition.url, "/") do
+    #           true ->
+    #             "#{condition.url}#{message}"
 
-              _ ->
-                "#{condition.url}/#{message}"
-            end
+    #           _ ->
+    #             "#{condition.url}/#{message}"
+    #         end
 
-          GibonWeb.RequestHelper.send_request(url)
+    #       GibonWeb.RequestHelper.send_request(url)
 
-        _ ->
-          false
-      end
-    end
+    #     _ ->
+    #       false
+    #   end
+    # end
 
     {:noreply, state}
   end
