@@ -66,7 +66,7 @@
             <%= for condition <- @device.conditions do %>
                 <li class="conditionbox">
                     <div class="conditioninfo">ID: <%= condition.id %></div>
-                    <div class="conditioninfo">Conditie: <%= condition.value %> <%= condition.operator %> value</div>
+                    <div class="conditioninfo">Conditie: value <%= condition.operator %> <%= condition.value %></div>
                     <div class="conditioninfo">Request: GET <%= condition.url %><%= if String.ends_with?(condition.url, "/"), do: "", else: "/" %>value</div>
                     <button class="btn btn-light top" phx-click="delete-condition" phx-value-id="<%= condition.id %>">Verwijder</button>
                 </li>
