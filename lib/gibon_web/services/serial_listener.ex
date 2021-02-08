@@ -32,7 +32,6 @@ defmodule GibonWeb.SerialListener do
 
   # Receive the data
   def handle_info({:circuits_uart, _pid, message}, state) do
-    IO.inspect(message)
     conditions = state["device"].conditions
 
     for condition <- conditions do
