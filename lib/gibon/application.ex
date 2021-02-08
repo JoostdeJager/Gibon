@@ -14,9 +14,10 @@ defmodule Gibon.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: Gibon.PubSub},
       # Start the Endpoint (http/https)
-      GibonWeb.Endpoint
+      GibonWeb.Endpoint,
       # Start a worker by calling: Gibon.Worker.start_link(arg)
       # {Gibon.Worker, arg}
+      GibonWeb.SerialManager
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

@@ -4,6 +4,7 @@ defmodule GibonWeb.ConditionLive do
   @impl true
   def mount(%{"port" => port}, _session, socket) do
     device = Gibon.Repo.get_by(Gibon.Serial.Device, port: port)
+    GibonWeb.SerialManager.subscribe()
     {:ok, fetch(socket, device)}
   end
 
@@ -49,7 +50,12 @@ defmodule GibonWeb.ConditionLive do
 
   @impl true
   def handle_event("stop-listening", _, socket) do
-    GibonWeb.SerialListener.stop(Process.whereis(:"#{socket.assigns.device.port}"))
+    GibonWeb.SerialHelper.stop_server(socket.assigns.device.port)
+    {:noreply, fetch(socket)}
+  end
+
+  @impl true
+  def handle_info(_message, socket) do
     {:noreply, fetch(socket)}
   end
 
@@ -71,7 +77,7 @@ defmodule GibonWeb.ConditionLive do
 
   def fetch(socket) do
     socket
-    |> assign(listening: Process.whereis(:"#{socket.assigns.device.port}"))
+    |> assign(listening: GibonWeb.SerialHelper.is_running(socket.assigns.device.port))
   end
 
   @impl true

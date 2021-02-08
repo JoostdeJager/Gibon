@@ -27,6 +27,17 @@ defmodule GibonWeb.SerialHelper do
   end
 
   def start_server(port) do
-    GibonWeb.SerialListener.start_link(port)
+    pid = Process.whereis(GibonWeb.SerialManager)
+    GenServer.cast(pid, {:new, port})
+  end
+
+  def stop_server(port) do
+    pid = Process.whereis(GibonWeb.SerialManager)
+    GenServer.cast(pid, {:close, port})
+  end
+
+  def is_running(port) do
+    pid = Process.whereis(GibonWeb.SerialManager)
+    GenServer.call(pid, {:running, port})
   end
 end

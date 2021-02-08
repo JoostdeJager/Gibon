@@ -10,13 +10,13 @@
         </svg>
     <% end %>
     <%= case @listening do %>
-        <% nil -> %>
+        <% false -> %>
             <button phx-click="start-listening" class="btn btn-light">Start connectie</button>
+            <%= live_redirect to: Routes.console_path(@socket, :index, @device.port), class: "btn btn-light" do %>
+                Console
+            <% end %>
         <% _ -> %>
             <button phx-click="stop-listening" class="btn btn-light">Stop connectie</button>
-        <%= live_redirect to: Routes.console_path(@socket, :index, @device.port), class: "btn btn-light" do %>
-            Console
-        <% end %>
     <% end %>
     <form phx-submit="new-condition" class="form-group top">
         <h2 class="text-center">Nieuwe conditie</h2>
