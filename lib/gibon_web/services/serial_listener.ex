@@ -63,8 +63,7 @@ defmodule GibonWeb.SerialListener do
                 "#{condition.url}/#{message}"
             end
 
-          # GibonWeb.RequestHelper.send_request(url)
-          IO.puts url
+          GibonWeb.RequestHelper.send_request(url)
 
         _ ->
           false

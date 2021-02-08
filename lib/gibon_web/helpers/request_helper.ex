@@ -1,5 +1,10 @@
 defmodule GibonWeb.RequestHelper do
   def send_request(url) do
-    HTTPoison.get(url)
+  	try do
+	  HTTPoison.get(url)
+	rescue
+	  _ ->
+	  	IO.puts "Whoops"
+	end
   end
 end
