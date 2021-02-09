@@ -30,6 +30,13 @@ defmodule GibonWeb.SerialListener do
     {:ok, %{"device" => device, "pid" => pid, "check_conditions" => check_conditions}}
   end
 
+  def handle_cast({:send, message}, state) do
+    pid = state["pid"]
+    response = Circuits.UART.write(pid, message)
+    GibonWeb.TerminalHelper.add_line(%{"message" => message, "sender" => "user"})
+    {:noreply, state}
+  end
+
   # Receive the data
   def handle_info({:circuits_uart, _pid, message}, state) do
     case state["check_conditions"] do

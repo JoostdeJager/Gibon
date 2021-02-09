@@ -9,14 +9,25 @@ defmodule GibonWeb.TerminalHelper do
     Phoenix.PubSub.broadcast(Gibon.PubSub, @topic, message)
   end
 
+  def filter_lines(lines) do
+		for line <- lines do
+			if String.length(line["message"]) > 0 do
+				line
+			end
+		end
+  end
+
 	def get_lines do
 		pid = Process.whereis(GibonWeb.Terminal)
-		GenServer.call(pid, :get)
+		lines = GenServer.call(pid, :get)
+		filter_lines(lines)
 	end
 
 	def add_line(line) do
 		pid = Process.whereis(GibonWeb.Terminal)
-		GenServer.cast(pid, {:add, line})
+		if String.length(Map.get(line, "message")) > 0 do
+			GenServer.cast(pid, {:add, line})
+		end
 	end
 
 	def clear do

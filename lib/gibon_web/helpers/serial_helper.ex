@@ -86,6 +86,11 @@ defmodule GibonWeb.SerialHelper do
     GenServer.cast(pid, {:new, {port, false}})
   end
 
+  def send_message(port, message) do
+    pid = Process.whereis(GibonWeb.SerialManager)
+    GenServer.cast(pid, {:send, port, message})
+  end
+
   def stop_server(port) do
     pid = Process.whereis(GibonWeb.SerialManager)
     GenServer.cast(pid, {:close, port})

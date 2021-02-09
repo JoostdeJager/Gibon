@@ -50,6 +50,13 @@ defmodule GibonWeb.SerialManager do
     end
   end
 
+  def handle_cast({:send, port, message}, servers) do
+    if Map.has_key?(servers, port) do
+      GenServer.cast(Map.get(servers, port), {:send, message})
+    end
+    {:noreply, servers}
+  end
+
   def handle_cast({:close, port}, servers) do
     new_servers =
       if Map.has_key?(servers, port) do

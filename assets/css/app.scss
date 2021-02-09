@@ -128,3 +128,32 @@ html {
   overflow-y: auto;
   overflow-x: hidden;
 }
+
+.serial {
+  background-color: $darker-base;
+  border-radius: 5px;
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+} 
+
+.user{
+  background-color: $darker-base-accent;
+  border-radius: 5px;
+  min-height: 50px;
+}
+
+.user-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: right;
+}
+
+.v-center {
+  display: flex;
+  align-items: center;
+}
+
+ul::-webkit-scrollbar {
+  background: red;
+}
