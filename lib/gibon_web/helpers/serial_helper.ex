@@ -28,6 +28,7 @@ defmodule GibonWeb.SerialHelper do
         end
       end
     [return] = Enum.filter(response, & !is_nil(&1)) 
+    IO.inspect(return)
     return
   end
 
