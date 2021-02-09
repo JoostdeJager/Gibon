@@ -13,12 +13,11 @@
         <ul class="list-unstyled">
             <%= for {port, info} <- @circuits do %>
                 <%= case info do %>
-                    <%= %{description: description, product_id: product_id} -> %>
+                    <%= %{product_id: product_id} -> %>
                         <li>
                             <div class="devicebox">
                                 <div class="devicetitle"><%= port %></div>
                                 <div class="deviceinfo">Product ID: <b><%= product_id %></b></div>
-                                <div class="deviceinfo">Omschrijving: <b><%= description %></b></div>
                                 <div class="top">
                                     <%= if not Enum.member?(@ports, port) do %>
                                     <button class="btn btn-light mb-1" phx-click="add-device" phx-value-port="<%= port %>">
