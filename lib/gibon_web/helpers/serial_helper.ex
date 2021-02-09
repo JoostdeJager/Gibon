@@ -27,9 +27,7 @@ defmodule GibonWeb.SerialHelper do
           Map.delete(devices, key)
         end
       end
-    [return] = Enum.filter(response, & !is_nil(&1)) 
-    IO.inspect(return)
-    return
+    Enum.filter(response, & !is_nil(&1)) 
   end
 
   def get_condition_string(condition, message) do
