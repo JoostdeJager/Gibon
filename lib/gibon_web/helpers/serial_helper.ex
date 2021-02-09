@@ -21,12 +21,14 @@ defmodule GibonWeb.SerialHelper do
   end
 
   def filter_devices(devices) do
-    [return | _] =
+    [return | _] = response =
       for {key, value} <- devices do
         if Map.get(value, :product_id) == nil do
           Map.delete(devices, key)
         end
       end
+
+    IO.inspect(response)
 
     return
   end
