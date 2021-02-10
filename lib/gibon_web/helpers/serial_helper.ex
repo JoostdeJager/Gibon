@@ -55,11 +55,11 @@ defmodule GibonWeb.SerialHelper do
     end
   end
 
-  def perform_condition(condition, condition_string, message) do
+  def perform_condition(condition, condition_string, port, message) do
     case Code.eval_string(condition_string) do
       {true, _} ->
         url = get_condition_url(condition, message)
-        GibonWeb.RequestHelper.send_request(url)
+        GibonWeb.RequestHelper.send_request(url, port)
       _ ->
         false
     end
@@ -67,10 +67,11 @@ defmodule GibonWeb.SerialHelper do
 
   def check_conditions(state, message) do
     conditions = state["device"].conditions
+    port = state["device"].port
 
     for condition <- conditions do
       condition_string = get_condition_string(condition, message)
-      perform_condition(condition, condition_string, message)
+      perform_condition(condition, condition_string, port, message)
     end
   end
 

@@ -48,7 +48,8 @@ defmodule Gibon.MixProject do
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
       {:circuits_uart, "~> 1.4"},
-      {:httpoison, "~> 1.7"}
+      {:httpoison, "~> 1.7"},
+      {:poison, "~> 4.0"}
     ]
   end
 

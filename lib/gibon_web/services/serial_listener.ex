@@ -33,6 +33,11 @@ defmodule GibonWeb.SerialListener do
   def handle_cast({:send, message}, state) do
     pid = state["pid"]
     response = Circuits.UART.write(pid, message)
+
+    IO.puts "++++++++++++++++"
+    IO.puts "+ Message sent +"
+    IO.puts "++++++++++++++++"
+
     GibonWeb.TerminalHelper.add_line(%{"message" => message, "sender" => "user"})
     {:noreply, state}
   end
